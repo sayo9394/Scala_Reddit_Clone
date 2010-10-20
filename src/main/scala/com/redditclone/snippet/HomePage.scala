@@ -34,8 +34,8 @@ class HomePage {
 	          case lnk :: Nil => {
 	              bind("lnk", xhtml,
 	                   "title" -> lnk.title.asHtml,
-	                   "url" -> <a href={lnk.url.asHtml}>{lnk.url.asHtml}</a>,
-	                   "description" -> lnk.description.asHtml,
+	                   "url" -> <a href={"http://" + lnk.url.is}>{lnk.url.is}</a>, 	// The "http://" which is added infront of the link, forces redirection
+	                   "description" -> lnk.description.asHtml,						// rules to be ignored.
 	                   "rank" -> (lnk.upRank.asHtml))
 	            }
 	          case _ => Text("Could not locate link " + linkTitle)

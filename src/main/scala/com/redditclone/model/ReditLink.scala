@@ -23,6 +23,10 @@ class ReditLink extends LongKeyedMapper[ReditLink] with IdPK {
     override def asHtml = Text(dateFormat.format(is))
   }
   
+  def rank:Int = {
+	  return upRank-downRank
+  }
+  
   object upRank extends MappedInt(this)
   object downRank extends MappedInt(this)
   object url extends MappedString(this,100)

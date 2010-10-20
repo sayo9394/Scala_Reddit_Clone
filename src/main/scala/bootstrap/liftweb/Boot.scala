@@ -27,7 +27,7 @@ class Boot {
     LiftRules.addToPackages("com.redditclone")
     Schemifier.schemify(true, Log.infoF _, User, Tag, ReditLink, Comment)
 
-        // Set up some rewrites
+    // Set up some rewrites
     LiftRules.rewrite.append {
       case 	RewriteRequest(ParsePath(List("reditLink", lnkTitle), _, _, _), _, _) =>
       		RewriteResponse("reditLink" :: Nil, Map("title" -> urlDecode(lnkTitle)))
