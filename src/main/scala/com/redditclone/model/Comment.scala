@@ -10,11 +10,6 @@ class Comment extends LongKeyedMapper[Comment] with IdPK {
   
   // Just like MappedString, except it's defaultValue is "" and the length is auto-cropped to fit in the column
   object title extends MappedString(this, 100) 
-  
-  object upRank extends MappedInt(this)					// how many times ranked up
-  
-  object downRank extends MappedInt(this)				// how many times ranked down
-  
   object description extends MappedString(this,300)		// actual comment
   
   // Each comment belongs to a specific owner.

@@ -20,7 +20,7 @@ class HomePage {
 	    		bind("lnk", chooseTemplate("reditLink", "entry", xhtml),
 				"title" -> <a href={"/reditLink/" + lnk.title.is}>{lnk.title.is}</a>,
 				"url" -> Text(lnk.url.is),
-				"rank" -> Text((lnk.upRank.is-lnk.downRank.is).toString),
+				"rank" -> Text((lnk.rank.is).toString),
 				"voteUp" -> Text("Vote Up"),
 				"voteDown" -> Text("Vote Down"))
 	    	})	
@@ -36,7 +36,7 @@ class HomePage {
 	                   "title" -> lnk.title.asHtml,
 	                   "url" -> <a href={"http://" + lnk.url.is}>{lnk.url.is}</a>, 	// The "http://" which is added infront of the link, forces redirection
 	                   "description" -> lnk.description.asHtml,						// rules to be ignored.
-	                   "rank" -> (lnk.upRank.asHtml))
+	                   "rank" -> (lnk.rank.asHtml))
 	            }
 	          case _ => Text("Could not locate link " + linkTitle)
 	        }

@@ -25,7 +25,7 @@ class Boot {
   
     // where to search snippet
     LiftRules.addToPackages("com.redditclone")
-    Schemifier.schemify(true, Log.infoF _, User, Tag, ReditLink, Comment)
+    Schemifier.schemify(true, Log.infoF _, User, Tag, ReditLink, Comment,Rank)
 
     // Set up some rewrites
     LiftRules.rewrite.append {

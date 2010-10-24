@@ -1,7 +1,7 @@
 <lift:surround with="default" at="content">
   <h2>Welcome to your project!</h2>
   <div id="entryform">
-      <table>
+      <!-- table>
         <tr>
 	        <th>Title</th>
 	        <th>Description</th>
@@ -10,17 +10,20 @@
 	        <th>Vote Down</th>
         </tr>
         <lift:HomePage.display>
-        <reditLink:entry>
-	      <tr>
-	        <td><lnk:title /></td>
-	        <td><lnk:url /></td>
-	        <td><lnk:rank/></td>
-	        <td><lnk:voteUp/></td>
-	        <td><lnk:voteDown/></td>
-	      </tr>
-        </reditLink:entry>
+	        <reditLink:entry>
+		      <tr>
+		        <td><lnk:title /></td>
+		        <td><lnk:url /></td>
+		        <td><lnk:rank/></td>
+		        <td><lnk:voteUp/></td>
+		        <td><lnk:voteDown/></td>
+		      </tr>
+	        </reditLink:entry>
         </lift:HomePage.display>
-      </table>
+      </table> -->
+	<lift:comet type="LinkActor">
+	  <auction:foo>Loading...</auction:foo>
+	</lift:comet>
      <h3><a href="/addReditLink">Do you need to add a new link?</a></h3>
   </div>
   

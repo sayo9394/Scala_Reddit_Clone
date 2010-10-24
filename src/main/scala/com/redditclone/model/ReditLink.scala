@@ -9,6 +9,8 @@ import java.util.Date
 class ReditLink extends LongKeyedMapper[ReditLink] with IdPK {
   def getSingleton = ReditLink
 
+  def ranks : List[Rank] = Rank.findAll(By(Rank.owner, this.id))
+  
   object owner extends MappedLongForeignKey(this, User) {
     override def dbIndexed_? = true
   }
@@ -23,11 +25,7 @@ class ReditLink extends LongKeyedMapper[ReditLink] with IdPK {
     override def asHtml = Text(dateFormat.format(is))
   }
   
-  def rank:Int = {
-	  return upRank-downRank
-  }
-  
-  object upRank extends MappedInt(this)
+  object rank extends MappedInt(this)
   object downRank extends MappedInt(this)
   object url extends MappedString(this,100)
   object title extends MappedString(this,100)
