@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-2010-10-20 13:23:21.544 GMT:
- Booting Derby version The Apache Software Foundation - Apache Derby - 10.4.2.0 - (689064): instance a816c00e-012b-c9ce-e497-00000736e1f8
-on database directory /home/simon/work/lift/redditClone/lift_example  
+2010-10-25 14:24:28.715 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.4.2.0 - (689064): instance a816c00e-012b-e3c6-a699-0000040fabe8
+on database directory /home/simon/work/lift/Scala_Reddit_Clone/lift_example  
 
 Database Class Loader started - derby.database.classpath=''

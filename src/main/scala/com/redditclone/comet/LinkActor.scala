@@ -14,8 +14,8 @@ import com.redditclone.controller._
 import java.lang.Long
 
 class LinkActor extends CometActor {
-    override def defaultPrefix = Full("reditLink")
-    val title = S.param("title")
+    override def defaultPrefix = Full("linkactor")
+    var lnkViews: List[ReditLink] = Nil
     def render = {
     	def lnkView(lnk: ReditLink): NodeSeq = {	
 	    	val rank = lnk.rank
@@ -38,14 +38,14 @@ class LinkActor extends CometActor {
             </div>)
         }
     	
-        def lnkViews: NodeSeq = ReditLink.findAllLinks match {
+       /* def lnkViews: NodeSeq = ReditLink.findAllLinks match {
             case Nil => Text("You have no accounts set up")
 	    	case links => links.flatMap({lnk =>
-            bind("lnk" -> <div>{lnkView _}</div>)
+            	bind("lnk" -> lnkView _)
 	    	})
-        }	
+        }*/	
 	    
-        bind("foo" -> <div>{lnkViews}</div>)
+        bind("foo" -> <div>{lnkViews.flatMap(lnkView _)}</div>)
     }
 
     def voteUp(): JsCmd = {
@@ -59,19 +59,18 @@ class LinkActor extends CometActor {
     }
 
     override def localSetup {
-        ReditClone !? AddListener(this, this.id) match {
-
-            case Success(true) => println("Listener added")
+        ReditClone !? AddListener(this) match {
+            case UpdateLinks => lnkViews = ReditLink.findAllLinks
             case _ => println("Other ls")
         }
     }
 
     override def localShutdown {
-        ReditClone ! RemoveListener(this, this.id)
+        ReditClone ! RemoveListener(this)
     }
 
     override def lowPriority : PartialFunction[Any, Unit] = {
-        case Success(true) => reRender(false)
+        case UpdateLinks => lnkViews = ReditLink.findAllLinks; reRender(false)
         case _ => println("Other lp")
     }
 }
