@@ -6,6 +6,7 @@ import net.liftweb.http.SHtml._
 import net.liftweb.http.RequestVar
 import net.liftweb.util.Helpers._
 import net.liftweb.util.Full
+import com.redditclone.controller._
 
 import model.{ReditLink,Tag,User}
 import java.util.Date
@@ -22,6 +23,7 @@ class AddReditLink{
       currentReditLink.validate match {
         case Nil =>
           currentReditLink.save
+          ReditClone.notifyListeners
           S.redirectTo("/index")
         case x => S.error(x)
       }

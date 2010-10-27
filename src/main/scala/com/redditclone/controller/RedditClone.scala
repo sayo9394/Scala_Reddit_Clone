@@ -11,8 +11,8 @@ import net.liftweb.mapper.By
 case class AddListener(listener:Actor)
 case class RemoveListener(listener:Actor)
 case class UpdateLinks
-case class VoteUp(lnkId:Long, user:User)
-case class VoteDown(lnkId:Long, user:User)
+case class VoteUp(title:String, user:User)
+case class VoteDown(title:String, user:User)
 case class Success(success:Boolean)
 
 object ReditClone extends Actor{
@@ -29,17 +29,21 @@ object ReditClone extends Actor{
 					reply(UpdateLinks)
 				case RemoveListener(listener:Actor) =>
 					listeners.excl(listener)
-				case VoteUp(lnkId:Long, user:User) =>
-                    val lnk =
-                        ReditLink.findAll(By(ReditLink.id, lnkId)).firstOption.get
-                    val rank = Rank.create
-                    rank.voteUp(true).lnk(lnk).owner(user).save
+				case VoteUp(title:String, user:User) =>
+					val lnk = ReditLink.findByTitle(title).firstOption.get
+					val newRank = lnk.rank + 1
+					lnk.rank(newRank).save
+					val rank = Rank.create
+					rank.voteUp(true).lnk(lnk).owner(user).save
                     notifyListeners           
-                case VoteDown(lnkId:Long, user:User) =>
-                    val lnk =
-                        ReditLink.findAll(By(ReditLink.id, lnkId)).firstOption.get
-                    val rank = Rank.create
-                    rank.voteUp(false).lnk(lnk).owner(user).save
+                case VoteDown(title:String, user:User) =>
+                    val lnk = ReditLink.findByTitle(title).firstOption.get
+					val newRank = lnk.rank - 1
+					lnk.rank(newRank).save
+					println("title: "+title) 
+					println("rank: "+lnk.rank.is) 
+					val rank = Rank.create
+					rank.voteUp(false).lnk(lnk).owner(user).save
                     notifyListeners
 			}
 		}

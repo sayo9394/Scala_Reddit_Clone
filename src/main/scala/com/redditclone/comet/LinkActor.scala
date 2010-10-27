@@ -20,41 +20,38 @@ class LinkActor extends CometActor {
     	def lnkView(lnk: ReditLink): NodeSeq = {	
 	    	val rank = lnk.rank
             val voteUpButton = <button type="button">{S.?("Vote Up!")}</button> %
-              ("onclick" -> voteUp)
-              
+            	("onclick" -> ajaxCall(JsRaw(lnk.title.is), voteUp _))    
             val voteDownButton = <button type="button">{S.?("Vote Down!")}</button> %
-              ("onclick" -> voteDown)
+            	("onclick" -> ajaxCall(JsRaw(lnk.title.is), voteDown _))      	
             
             (<div>
-                <strong>{lnk.title}</strong>
+                <strong>Title:</strong> {lnk.title}
+                <br/>
+                <strong>Rank:</strong> {lnk.rank}
                 <br/>
                 <div>
-                     <a href={"http://" + lnk.url.is}>{lnk.url.is}</a>: by {lnk.owner.name}
+                     <a href={"/reditLink/" + lnk.title.is}>{lnk.title.is}</a>: by {lnk.owner.name}
                 </div>
                 <div>
                    {voteUpButton} {voteDownButton}
                 </div>
-                {lnk.description}<br/>
+                   <strong>Description:</strong> {lnk.description}<br/><br/>
             </div>)
         }
-    	
-       /* def lnkViews: NodeSeq = ReditLink.findAllLinks match {
-            case Nil => Text("You have no accounts set up")
-	    	case links => links.flatMap({lnk =>
-            	bind("lnk" -> lnkView _)
-	    	})
-        }*/	
-	    
         bind("foo" -> <div>{lnkViews.flatMap(lnkView _)}</div>)
     }
 
-    def voteUp(): JsCmd = {
-        //ReditClone ! VoteUp(title)
+    def voteUp(title:String): JsCmd = {
+    	val user = User.currentUser.open_!
+        ReditClone ! VoteUp(title,user)
         Noop
     }
     
-    def voteDown(): JsCmd = {
-       // ReditClone ! VoteDown(title)
+    def voteDown(title:String): JsCmd = {
+    	val user = User.currentUser.open_!
+        println("title: "+title)
+    	println("user: "+user)
+    	ReditClone ! VoteDown(title,user)
         Noop
     }
 
