@@ -5,10 +5,9 @@ import net.liftweb.http._
 import net.liftweb.http.SHtml._
 import net.liftweb.http.RequestVar
 import net.liftweb.util.Helpers._
-import net.liftweb.util.Full
+import net.liftweb.common._
 
-import java.lang.String
-import model.{ReditLink,Tag,User}
+import com.redditclone.model.{ReditLink,Tag,User}
 
 class HomePage {
 	def howdy = <span>Welcome to redditClone at {new _root_.java.util.Date} <br/> Its not much, <b> but i'm still learning </b> </span> 

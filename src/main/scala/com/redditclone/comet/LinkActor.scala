@@ -8,51 +8,56 @@ import net.liftweb.http.js.JsCmds._
 import net.liftweb.http.js.JE._
 import net.liftweb.util.Helpers._
 import net.liftweb.util._
-import scala.xml.{NodeSeq,Text}
+import net.liftweb.common._
+import scala.xml.{NodeSeq,Text, Elem}
 import com.redditclone.model._
 import com.redditclone.controller._
-import java.lang.Long
+
+object CurrentLinkActor extends SessionVar[Box[LinkActor]](Empty)
 
 class LinkActor extends CometActor {
+  CurrentLinkActor.set(Full(this))
+
     override def defaultPrefix = Full("linkactor")
     var lnkViews: List[ReditLink] = Nil
     def render = {
     	def lnkView(lnk: ReditLink): NodeSeq = {	
-	    	val rank = lnk.rank
-            val voteUpButton = <button type="button">{S.?("Vote Up!")}</button> %
-            	("onclick" -> ajaxCall(JsRaw(lnk.title.is), voteUp _))    
-            val voteDownButton = <button type="button">{S.?("Vote Down!")}</button> %
-            	("onclick" -> ajaxCall(JsRaw(lnk.title.is), voteDown _))      	
-            
-            (<div>
-                <strong>Title:</strong> {lnk.title}
-                <br/>
-                <strong>Rank:</strong> {lnk.rank}
-                <br/>
-                <div>
-                     <a href={"/reditLink/" + lnk.title.is}>{lnk.title.is}</a>: by {lnk.owner.name}
-                </div>
-                <div>
-                   {voteUpButton} {voteDownButton}
-                </div>
-                   <strong>Description:</strong> {lnk.description}<br/><br/>
-            </div>)
+	  val rank = lnk.rank
+          val voteUpButton: Elem = 
+            User.currentUser.map(ignore => ajaxButton(S.?("Vote Up!"), () => voteUp(lnk.id))) openOr <span/>
+
+          val voteDownButton: Elem = User.currentUser.map(ignore => ajaxButton(S.?("Vote Down!"), () => voteDown(lnk.id))) openOr <span/>
+          (<div>
+           <strong>Title:</strong> {lnk.title}
+           <br/>
+           <strong>Rank:</strong> {lnk.rank}
+           <br/>
+           <div>
+           <a href={"/reditLink/" + urlEncode(lnk.title)}>{lnk.title}</a>: by {lnk.owner.name}
+           </div>
+           <div>
+           {voteUpButton} {voteDownButton}
+           </div>
+           <strong>Description:</strong> {lnk.description}<br/><br/>
+           </div>)
         }
-        bind("foo" -> <div>{lnkViews.flatMap(lnkView _)}</div>)
+      bind("foo" -> <div>{lnkViews.flatMap(lnkView _)}</div>)
     }
 
-    def voteUp(title:String): JsCmd = {
-    	val user = User.currentUser.open_!
-        ReditClone ! VoteUp(title,user)
-        Noop
+    def voteUp(id: Long): JsCmd = {
+      for {
+        user <- User.currentUser
+      } ReditClone ! VoteUp(id, user)
+
+      Noop
     }
     
-    def voteDown(title:String): JsCmd = {
-    	val user = User.currentUser.open_!
-        println("title: "+title)
-    	println("user: "+user)
-    	ReditClone ! VoteDown(title,user)
-        Noop
+    def voteDown(id: Long): JsCmd = {
+      for {
+        user <- User.currentUser
+      } ReditClone ! VoteDown(id, user)
+
+      Noop
     }
 
     override def localSetup {
@@ -67,8 +72,9 @@ class LinkActor extends CometActor {
     }
 
     override def lowPriority : PartialFunction[Any, Unit] = {
-        case UpdateLinks => lnkViews = ReditLink.findAllLinks; reRender(false)
-        case _ => println("Other lp")
+      case UpdateLinks => lnkViews = ReditLink.findAllLinks; reRender(false)
+      case u: User => reRender(false);  // reRender on login
+      case _ => println("Other lp")
     }
 }
 

@@ -5,10 +5,10 @@ import net.liftweb.http._
 import net.liftweb.http.SHtml._
 import net.liftweb.http.RequestVar
 import net.liftweb.util.Helpers._
-import net.liftweb.util.Full
+import net.liftweb.common._
 import com.redditclone.controller._
 
-import model.{ReditLink,Tag,User}
+import com.redditclone.model.{ReditLink,Tag,User}
 import java.util.Date
 
 class AddReditLink{
