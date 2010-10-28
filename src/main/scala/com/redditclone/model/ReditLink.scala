@@ -35,7 +35,7 @@ class ReditLink extends LongKeyedMapper[ReditLink] with IdPK {
 object ReditLink extends ReditLink with LongKeyedMetaMapper[ReditLink] {
 	/* finds all links with a specific owner */
 	def findLinksByOwner (owner : User) : List[ReditLink] = 
-		ReditLink.findAll(By(ReditLink.owner, owner.id.is))
+		ReditLink.findAll(By(ReditLink.owner, owner.id.is),OrderBy(ReditLink.dateOf, Ascending))
 	  
 	def findByTitle (title : String) : List[ReditLink] = 
 		ReditLink.findAll(By(ReditLink.title, title))

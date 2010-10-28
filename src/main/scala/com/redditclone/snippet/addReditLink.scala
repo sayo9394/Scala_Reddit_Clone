@@ -15,6 +15,7 @@ class AddReditLink{
   object currentReditLinkVar extends RequestVar[ReditLink]({
       ReditLink.create.owner(User.currentUser.open_!)
     })
+  
   def currentReditLink = currentReditLinkVar.is
 
   def addentry (xhtml : NodeSeq) : NodeSeq = {

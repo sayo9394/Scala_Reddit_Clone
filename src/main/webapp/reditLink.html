@@ -11,9 +11,15 @@
 	      Title:<lnk:title/>
 	    </label> 
   	</p>
+  	
   	<p>
 	    <label for="URL">
 	      URL:<lnk:url/>
+	    </label> 
+  	</p>
+  	<p>
+	    <label for="RANK">
+	     <strong> Rank</strong>:<lnk:rank/>
 	    </label> 
   	</p>
   	<p>
@@ -21,8 +27,46 @@
 	      Description:  <lnk:description/>
 	    </label> 
   	</p>	
-  		<!-- <lnk:comments>
-  		</lnk:comments> -->
+  		<table>
+	        <tr>
+		        <th>Title</th>
+		        <th>Description</th>
+	        </tr>
+	       <lnk:CommentEntry>
+		      <tr>
+		        <td><cmnt:title /></td>
+		        <td><cmnt:desc /></td>
+		      </tr>
+	       </lnk:CommentEntry>
+      </table>
   	</lift:HomePage.detail>
+  	 <lift:HomePage.loggedIn>
+	  	 <lift:HomePage.addComment form="POST" >
+	       <div>
+		    <h3>Add an Comment</h3>
+		   <div id="entryform">
+		    <table class="tablesorter">
+		    <thead>
+		      <tr>
+		        <th></th>
+		        <th>Comment Title</th>
+		        <th>Cpmment Description</th>
+		        <th></th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <tr>
+		        <td><comment:id /></td>
+		        <td><comment:title /></td>
+		        <td><comment:desc /></td>
+		        <td><comment:save /></td>
+		      </tr>
+		    </tbody>
+		    </table>
+		    </div>
+		    </div>
+    	</lift:HomePage.addComment>
+    </lift:HomePage.loggedIn>
+  	
   </div>
 </lift:surround>

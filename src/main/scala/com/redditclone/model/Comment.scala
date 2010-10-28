@@ -26,4 +26,7 @@ class Comment extends LongKeyedMapper[Comment] with IdPK {
 object Comment extends Comment with LongKeyedMetaMapper[Comment] {
   def byUser (owner : User) : List[Comment] = 
     Comment.findAll(By(Comment.owner, owner.id.is))
+    
+  def byLink (lnk : ReditLink) : List[Comment] = 
+    Comment.findAll(By(Comment.reditLink, lnk.id.is))
 }
