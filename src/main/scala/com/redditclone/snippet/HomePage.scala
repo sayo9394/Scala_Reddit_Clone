@@ -55,7 +55,7 @@ class HomePage {
 			currentComment.validate match {
 				case Nil =>
 				currentComment.save
-				//S.redirectTo("/index")
+				S.redirectTo("/reditLink/" + urlEncode(currentLink.title))	//refresh so to submit comment.
 				case x => S.error(x)
 			}
 		}
